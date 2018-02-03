@@ -1,0 +1,62 @@
+car rental example
+
+1. customer makes account 
+INSERT INTO `driver` (`driver_id`, `driver_first_name`, `driver_last_name`, `dirver_birthdate`) VALUES (NULL, 'john', 'doe', '1990-02-07');
+
+2. asks the system which cars are available in vienna
+
+select cars.manufacturer, cars.model, car_tracking.tracking_id, location.city_name
+from car_tracking
+inner join cars on car_tracking.fk_car_id = cars.car_id
+inner join location on car_tracking.fk_location_id = location.location_id
+WHERE location.city_name = "Vienna"
+
+3. fills out reservation for tesla model 3 in vienna
+
+INSERT INTO reservation (res_id, fk_driver_id, fk_car_id,res_date) VALUES (NULL, '1', '1', '2018-02-14');
+
+
+3. goes to car rental where the employee connects the reservation to the rent form and charges 300 €
+
+INSERT INTO rent (rent_id, paid_charges, fk_res_id)
+VALUES (NULL, '300', '4')
+
+
+4. after some time the customer decides to return the car to a different location in st.pölten when he arrives he gives the key back to the employee
+
+INSERT INTO car_tracking (tracking_id, fk_location_id, tracking_date, fk_car_id)
+VALUES (NULL; '5', '2018-02-21', '01')
+
+
+5. the employee in st.pölten recognizes some small damages on the car and  checks the gas, 
+charges 250 euro for damage and 10 euro for gas refill
+
+INSERT INTO car_return (return_id, fk_rent_id, damager_charge, gas_level_charge, fk_tracking_id)
+
+
+
+more queries:
+
+
+which car are at which location? 
+
+select cars.manufacturer, cars.model, car_tracking.tracking_id, location.city_name
+from car_tracking
+inner join cars on car_tracking.fk_car_id = cars.car_id
+inner join location on car_tracking.fk_location_id = location.location_id
+
+who has made a reservation for which car?
+
+SELECT driver.driver_first_name, driver.driver_last_name, cars.manufacturer, cars.model
+from reservation
+INNER JOIN cars on reservation.fk_car_id = cars.car_id
+INNER JOIN driver on reservation.fk_driver_id = driver.driver_id
+
+who has rent which car?
+
+SELECT driver.driver_first_name, driver.driver_last_name, cars.manufacturer, cars.model
+from rent
+INNER JOIN reservation on rent.fk_res_id = reservation.res_id
+INNER JOIN cars on reservation.fk_car_id = cars.car_id
+INNER JOIN driver on reservation.fk_driver_id = driver.driver_id
+
